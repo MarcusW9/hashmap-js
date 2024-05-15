@@ -16,7 +16,6 @@ class hashMap {
             }
         return hashCode
     }
-    
 
     set(key, value) {
         let index = this.hash(key);
@@ -28,6 +27,10 @@ class hashMap {
             } 
         }
         this.buckets[index].push({ [key] : value })
+
+        if (this.length() > this.size * 0.75) {
+            this.size = this.size * 1.25
+        }
     }
 
     get(key) {
