@@ -1,3 +1,6 @@
+// if (index < 0 || index >= buckets.length) {
+//     throw new Error("Trying to access index out of bound");
+//   }
 
 class hashMap {
     constructor(size) {
@@ -17,6 +20,16 @@ class hashMap {
         return hashCode
     }
 
+    rehash() {
+        const oldBuckets = this.entries()
+        this.size = this.size * 1.25
+        this.buckets = new Array(this.size).fill(null).map(() => [])
+
+        oldBuckets.forEach(el => {
+            this.set(el[0], el[1])
+        })
+    }
+
     set(key, value) {
         let index = this.hash(key);
 
@@ -27,9 +40,9 @@ class hashMap {
             } 
         }
         this.buckets[index].push({ [key] : value })
-
+        
         if (this.length() > this.size * 0.75) {
-            this.size = this.size * 1.25
+            this.rehash()
         }
     }
 
@@ -130,12 +143,9 @@ class hashMap {
 }
 
 // To create out of bounds for the index 
-if (index < 0 || index >= buckets.length) {
-   throw new Error("Trying to access index out of bound");
- }
 
 // To create the test hashmap
-test = new hashMap(16) 
+test = new hashMap(8) 
 // console.log(test.buckets)
 
 // set(key, value) 
@@ -168,3 +178,14 @@ test.set("orange", "monkey")
 
 // // entries
 // console.log(test.entries())
+
+// // Testing the load capacity increase 
+console.log(test.buckets)
+
+test.set("blue", "loadslug")
+test.set("purple", "loaddragon")
+test.set("green", "loadparrot")
+
+// test.rehash()
+
+console.log(test.buckets)
